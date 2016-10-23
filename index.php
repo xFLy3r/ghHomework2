@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require __DIR__ . '/vendor/autoload.php';
 
 
@@ -7,11 +8,19 @@ use Gregwar\Captcha\CaptchaBuilder;
 use Respect\Validation\Validator as v;
 
 $builder = new CaptchaBuilder;
+$msg = '';
+
+if (isset($_POST['phrase'])) {
+    if($_POST['phrase'] == $_SESSION['phrase']) {
+
+    }
+    else {
+        $msg = 'Wrong or empty captcha';
+    }
+}
+
 $builder->build();
-
-$number = 123 . 's';
-echo v::numeric()->validate($number);
-
+$_SESSION['phrase'] = $builder->getPhrase();
 ?>
 
 <html>
@@ -22,25 +31,26 @@ echo v::numeric()->validate($number);
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<form>
+<form method="post">
     <h3>GeekHub Homerwork #2</h3>
     <div class="row">
         <div class="four columns">
-            <label for="nameInput">Your name</label>
-            <input class="u-full-width" placeholder="My Name" name="nameInput" id="nameInput" type="text">
+            <label for="name">Your name</label>
+            <input class="u-full-width" placeholder="My Name" name="name" id="name" type="text" >
         </div>
     </div>
     <div class="row">
         <div class="four columns">
-            <label for="emailInput">Your email</label>
-            <input class="u-full-width" placeholder="myemail@example.com" name="emailInput" id="emailInput" type="email">
+            <label for="email">Your email</label>
+            <input class="u-full-width" placeholder="myemail@example.com" name="email" id="email" type="email">
         </div>
     </div>
     <div class="row">
         <div class="four columns">
-            <label for="Enter the captcha:">Enter the Captcha:</label>
-            <p><img src="<?php echo $builder->inline(); ?>" /></p>
-            <input class="u-full-width" placeholder="captcha" name="captchaInput" id="captchaInput" type="text">
+            <label for="phrase">Enter the Captcha</label>
+            <p><img src="<?=$builder->inline(); ?>" /><br>
+            <?=$msg?></p>
+            <input class="u-full-width" name="phrase" id="phrase" type="text" value="">
         </div>
     </div>
 
