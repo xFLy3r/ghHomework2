@@ -1,0 +1,9 @@
+{
+  "require": {
+    "php":">=7.0.*",
+    "ext-gd": ">=2.1.*",
+    "ext-mbstring": ">=7.0.8",
+    "gregwar/captcha":"^1.1",
+    "respect/validation": "^1.1"
+  }
+}
